@@ -1,14 +1,35 @@
-const db = require('../config/db');
+const db = require('../config/db')
+//const { addBook } = require('../controllers/userController')
 
 //async - wait
-const getALLBooks = async () => {
-    const [rows] = await db.query("select * form buku");
-    return rown
-};
+const getAllBooks = async () => {
+    const [rows] = await db.query("select * from buku")
+    return rows
+}
 
 const getBookByCode = async (code) => {
-    conts [row] = await db.query("select * from buku where kode_buku = ?", [code]);
+    const [row] =
+        await db.query("select * from buku where kode_buku=?", [code])
     return row[0]
-};
+}
+const addBook = async (book) => {
+    const { kode, judul, pengarang, penerbit } = book
+    const query = "insert into buku" + "(kode_buku,judul,pengarang,penerbit)" + "values (?,?,?,?)"
+    const affected = await db.query(query, [kode, judul, pengarang, penerbit])
+    return affected[0].affectedRows
+}
 
-module.exports = {getALLBooks, getBookByCode};
+const delBook = async (id) => {
+    const aff = await db.query("Delete from buku where kode_buku=?", [id])
+    return aff[0].affectedRows
+}
+
+const updateBook = async (kode, book) => {
+    const { judul, pengarang, penerbit } = book
+    const query = "UPDATE buku " + "SET judul = ?, pengarang = ?, penerbit = ? " + "WHERE kode_buku = ?"
+    const affected = await db.query(query, [judul, pengarang, penerbit, kode])
+    return affected[0].affectedRows
+}
+
+
+module.exports = { getAllBooks, getBookByCode, addBook, delBook, updateBook }

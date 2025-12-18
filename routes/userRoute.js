@@ -1,9 +1,14 @@
-const express = require('express'); //untuk membuat router
-const userController = require('../controllers/userController');
+const express = require('express') // untuk memuat router
+const userControl = require('../controllers/userController')
 
-const router = express.Router();
+const router = express.Router()
 
-router.get('/', userController.getAllBooks);
-router.get('/:code', userController.getBookByCode);
+router.get('/', userControl.getAllBooks)
+router.get('/:code', userControl.getBookByCode)
 
-module.exports = router;
+router.post('/', userControl.addBook)
+router.delete('/:code', userControl.delBook)
+
+router.put('/:code', userControl.updateBook)
+
+module.exports = router
